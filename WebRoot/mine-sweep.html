@@ -1,14 +1,81 @@
+<!-- 
+	六边形扫雷（模仿http://cuixiping.github.io/minesweeper-240.svg）
+	@author   King Deng
+	@email    kuohsing_don@163.com
+	@date     2014-12
+ -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Mine Sweep</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
 <script src="js/mine-sweep.js"></script>
+<link href="css/mine.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <svg>
+	<defs xmlns="http://www.w3.org/2000/svg">
+		<polygon id="pattern2" points="0 0 1 1 2 2" />
+		<text id="t1" fill="#80ffff">1</text>
+		<text id="t2" fill="#64ff64">2</text>
+		<text id="t3" fill="#ff9900">3</text>
+		<text id="t4" fill="#ff00ff">4</text>
+		<text id="t5" fill="#ff4500">5</text>
+		<text id="t6" fill="#00bfff">6</text>
+		<text id="t7" fill="#c8f49f">7</text>
+		<text id="t8" fill="#ffa8d3">8</text>
+	
+		<g id="flagMark">
+			<path d="M-3 -10 l0 15 15 0z" fill="#ff0000" stroke="none" />
+			<path d="M-3 -10 l0 20" fill="none" stroke="#800000" stroke-width="3" />
+		</g>
+		<use id="useFlag" x="0" y="14" xlink:href="#flagMark"
+				xmlns:xlink="http://www.w3.org/1999/xlink" />
+		<g id="flagErrMark">
+			<path d="M-3 -10 l0 15 15 0z" fill="#fff" stroke="none" />
+			<path d="M-3 -10 l0 20" fill="none" stroke="#ccc" stroke-width="3" />
+		</g>
+		<g id="mine">
+			<path fill="none" stroke="#333333" stroke-width="1"
+				d="m 7.625,16.49 c -5.125,-13.62 11,2 9.5,-7.88" />
+			<path fill="#808080" stroke="#333333" stroke-width="1"
+				d="m 11.375,23.74 4.375,-4.75 -4,-5.5 c 0,0 -2.07,-0.24 -4,1.37 -2.25,1.88 -2.5,3.5 -2.5,3.5 z" />
+			<circle cx="15" cy="23" r="8" fill="#999" stroke="#333333"
+				stroke-width="1" />
+		</g>
+		<g id="mineErr">
+			<path fill="none" stroke="#cc0000" stroke-width="1"
+				d="m 7.625,16.49 c -5.125,-13.62 11,2 9.5,-7.88" />
+			<path fill="#cc0000" stroke="#333333" stroke-width="1"
+				d="m 11.375,23.74 4.375,-4.75 -4,-5.5 c 0,0 -2.07,-0.24 -4,1.37 -2.25,1.88 -2.5,3.5 -2.5,3.5 z" />
+			<circle cx="15" cy="23" r="8" fill="#cc0000" stroke="#333333"
+				stroke-width="1" />
+		</g>
+		<use id="useMine" x="-15" y="-6" xlink:href="#mine"/>
+	</defs>
 	<rect ></rect>
+	<g id="gSize"></g>
+	<g id="gMines"></g>
+	<g id="gFlags"></g>
+	
+	<g class="button">
+		<path id="btnNew" d="M-30,310 l10,-10 h50v20l-10,10h-50z" class="button" />
+		<text class="events-none" x="0" y="322" fill="#006600"
+					text-anchor="middle">New</text>
+	</g>
+	<g class="button events-none">
+		<path d="M40,310 l10,-10 h50v20l-10,10h-50z" class="button"/>
+		<text x="70" y="322" id="numTimePast" fill="#006600" text-anchor="middle">9</text>
+	</g>
+	<g class="button events-none">
+		<path d="M320,310 l10,-10 h50v20l-10,10h-50z" class="button"/>
+		<text x="350" y="322" id="needOpenRest" fill="#006600" text-anchor="middle">110</text>
+	</g>
+	<g class="button events-none">
+		<path d="M390,310 l10,-10 h50v20l-10,10h-50z" class="button"/>
+		<text x="420" y="322" id="numMinesRest" fill="#006600" text-anchor="middle">33</text>
+	</g>
 </svg>
 </body>
 </html>

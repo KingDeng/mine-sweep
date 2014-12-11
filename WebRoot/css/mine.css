@@ -1,0 +1,29 @@
+@CHARSET "UTF-8";
+#g1 path,#g1 polygon,path.button {
+	fill: #a0a0a0;
+	fill-opacity: .8;
+	stroke: #99cc66;
+	stroke-width: 1;
+}
+
+text {
+	font-family: Times New Roman;
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+.events-none,#g2,#gMines,#gQues,#gFlags {
+	pointer-events: none;
+}
+
+g.button:not (.events-none ) path {
+	cursor: pointer;
+}
+
+g.button:not (.events-none ) text {
+	
+}
+
+g.button:not (.events-none ):hover path {
+	fill: #b9b9b9;
+}
