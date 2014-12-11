@@ -14,8 +14,8 @@
 <link href="css/mine.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<svg>
-	<defs xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 400">
+	<defs>
 		<polygon id="pattern2" points="0 0 1 1 2 2" />
 		<text id="t1" fill="#80ffff">1</text>
 		<text id="t2" fill="#64ff64">2</text>
@@ -23,8 +23,6 @@
 		<text id="t4" fill="#ff00ff">4</text>
 		<text id="t5" fill="#ff4500">5</text>
 		<text id="t6" fill="#00bfff">6</text>
-		<text id="t7" fill="#c8f49f">7</text>
-		<text id="t8" fill="#ffa8d3">8</text>
 	
 		<g id="flagMark">
 			<path d="M-3 -10 l0 15 15 0z" fill="#ff0000" stroke="none" />
@@ -52,29 +50,28 @@
 			<circle cx="15" cy="23" r="8" fill="#cc0000" stroke="#333333"
 				stroke-width="1" />
 		</g>
-		<use id="useMine" x="-15" y="-6" xlink:href="#mine"/>
 	</defs>
-	<rect ></rect>
+	<rect x="1" y="1" width="598" height="398" fill="#009900" stroke="#009900" stroke-width="2" ab="author"/>
 	<g id="gSize"></g>
 	<g id="gMines"></g>
 	<g id="gFlags"></g>
 	
 	<g class="button">
-		<path id="btnNew" d="M-30,310 l10,-10 h50v20l-10,10h-50z" class="button" />
+		<path id="btnNew" d="M 30 360 l00,-10 h50v20l-10,10h-50z" class="button" />
 		<text class="events-none" x="0" y="322" fill="#006600"
 					text-anchor="middle">New</text>
 	</g>
 	<g class="button events-none">
-		<path d="M40,310 l10,-10 h50v20l-10,10h-50z" class="button"/>
-		<text x="70" y="322" id="numTimePast" fill="#006600" text-anchor="middle">9</text>
+		<path d="M 100 360 l10,-10 h50v20l-10,10h-50 z" class="button"/>
+		<text x="70" y="322" id="numTimePast" fill="#006600" text-anchor="middle"></text>
 	</g>
 	<g class="button events-none">
-		<path d="M320,310 l10,-10 h50v20l-10,10h-50z" class="button"/>
-		<text x="350" y="322" id="needOpenRest" fill="#006600" text-anchor="middle">110</text>
+		<path d="M 380 360 l10,-10 h50v20l-10,10h-50z" class="button"/>
+		<text x="350" y="322" id="needOpenRest" fill="#006600" text-anchor="middle"></text>
 	</g>
 	<g class="button events-none">
-		<path d="M390,310 l10,-10 h50v20l-10,10h-50z" class="button"/>
-		<text x="420" y="322" id="numMinesRest" fill="#006600" text-anchor="middle">33</text>
+		<path d="M 450 360 l10,-10 h50v20l-10,10h-50z" class="button"/>
+		<text x="420" y="322" id="numMinesRest" fill="#006600" text-anchor="middle"></text>
 	</g>
 </svg>
 </body>

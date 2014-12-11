@@ -1,4 +1,7 @@
 @CHARSET "UTF-8";
+body {
+	margin:0 0;
+}
 #g1 path,#g1 polygon,path.button {
 	fill: #a0a0a0;
 	fill-opacity: .8;
