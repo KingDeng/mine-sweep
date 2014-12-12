@@ -8,9 +8,9 @@
  * 
  *  =================================================================
  */
-var flag = false;
-var sideLength = 16;
-var firstXY = {};
+var begin = false;		//扫雷开始标识
+var sideLength = 16;	//六边形边长
+var firstXY = {};		//左上角第一个六边形中心点坐标
 firstXY.x = 50;
 firstXY.y = 40;
 
@@ -37,6 +37,9 @@ $(document).ready(function(){
 	}
 	$("#panel polygon").on("click", sweep);
 });
+/**
+ * 扫雷事件(即单击雷区事件)
+ */
 function sweep(){
 	var tempTime = parseInt($("#time").text());
 	if(tempTime == 0){
@@ -46,18 +49,28 @@ function sweep(){
 	$(this).css("fill", "#009900");
 	
 }
-
+/**
+ * 生成地雷
+ */
 function initMines(){
 	
 }
-
+/**
+ * 计时函数
+ */
 function timing(){
 	var temp = parseInt($("#time").text());
 	temp = temp + 1;
 	$("#time").text(temp);
 	setTimeout(timing,1000);
 }
-
+/**
+ * 生成整个雷区
+ * @param index 	六边形的ID
+ * @param centerXY	六边形中心点坐标
+ * @param sideLen	六边形边长
+ * @returns
+ */
 function createPolygon(index, centerXY, sideLen){
 	var x = centerXY.x, y = centerXY.y;
 	var points = [];
