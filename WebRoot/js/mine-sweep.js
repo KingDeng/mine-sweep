@@ -8,6 +8,7 @@
  * 
  *  =================================================================
  */
+var timeout;					//setTimeOut返回值
 var begin = false;		//扫雷开始标识
 var sideLength = 16;	//六边形边长
 var firstXY = {};		//左上角第一个六边形中心点坐标
@@ -36,6 +37,7 @@ $(document).ready(function(){
 		}
 	}
 	$("#panel polygon").on("click", sweep);
+	$("#btnNew").on("click", newStart);
 });
 /**
  * 扫雷事件(即单击雷区事件)
@@ -62,7 +64,7 @@ function timing(){
 	var temp = parseInt($("#time").text());
 	temp = temp + 1;
 	$("#time").text(temp);
-	setTimeout(timing,1000);
+	timeout = setTimeout(timing,1000);
 }
 /**
  * 生成整个雷区
@@ -106,6 +108,15 @@ function createPolygon(index, centerXY, sideLen){
 	$(polygon).attr("points", pointStr.trim());
 	return polygon;
 }
+/**
+ * 重新开始游戏
+ */
+function newStart(){
+	$("#time").text("0");
+	clearTimeout(timeout);
+	$("#panel polygon").css("fill", "#a0a0a0");
+}
+
 String.prototype.trim = function(){
     return this.replace(/(^[\s]*)|([\s]*$)/g, "");
 };
