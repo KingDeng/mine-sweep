@@ -8,6 +8,7 @@
  * 
  *  =================================================================
  */
+var flag = false;
 var sideLength = 16;
 var firstXY = {};
 firstXY.x = 50;
@@ -34,7 +35,28 @@ $(document).ready(function(){
 			$("#panel").append(tempP);
 		}
 	}
+	$("#panel polygon").on("click", sweep);
 });
+function sweep(){
+	var tempTime = parseInt($("#time").text());
+	if(tempTime == 0){
+		timing();
+		initMines();
+	}
+	$(this).css("fill", "#009900");
+	
+}
+
+function initMines(){
+	
+}
+
+function timing(){
+	var temp = parseInt($("#time").text());
+	temp = temp + 1;
+	$("#time").text(temp);
+	setTimeout(timing,1000);
+}
 
 function createPolygon(index, centerXY, sideLen){
 	var x = centerXY.x, y = centerXY.y;
