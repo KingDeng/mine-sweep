@@ -6,17 +6,20 @@
  * @date     2014-12
  * @version  1.0
  * 
- *  =================================================================
+ *  ================================================================
  */
-var timeout;					//setTimeOut返回值
-var begin = false;		//扫雷开始标识
+var timeout;			//setTimeOut返回值
+//var begin = false;		//扫雷开始标识
 var sideLength = 16;	//六边形边长
+var mineSize = 40;		//地雷个数
+var mineId = [];		//地雷所在位置
+var mineNum = [];		//周围地雷个数
 var firstXY = {};		//左上角第一个六边形中心点坐标
 firstXY.x = 50;
 firstXY.y = 40;
 
 $(document).ready(function(){
-	var row = 13, col = 20;
+	var row = 13, col = 20, index = 0;
 	for(var i = 0; i < row; i++){
 		if(i % 2 != 0)
 			col = 19;
@@ -32,10 +35,15 @@ $(document).ready(function(){
 			
 			centerXY.y = firstXY.y + sideLength * i * 3 / 2;
 			
-			var tempP = createPolygon(i, centerXY, sideLength);
+			var tempP = createPolygon(index, centerXY, sideLength);
 			$("#panel").append(tempP);
+			$("#panel").append(createText(index, centerXY));
+			mineNum[index] = 0;
+			index++;
 		}
 	}
+	$("#needOpen").text(index - mineSize);
+	$("#minesRest").text(mineSize);
 	$("#panel polygon").on("click", sweep);
 	$("#btnNew").on("click", newStart);
 });
@@ -43,10 +51,11 @@ $(document).ready(function(){
  * 扫雷事件(即单击雷区事件)
  */
 function sweep(){
+	var id = parseInt($(this).attr("id"));
 	var tempTime = parseInt($("#time").text());
 	if(tempTime == 0){
 		timing();
-		initMines();
+		initMines(id);
 	}
 	$(this).css("fill", "#009900");
 	
@@ -54,8 +63,48 @@ function sweep(){
 /**
  * 生成地雷
  */
-function initMines(){
-	
+function initMines(first){
+	while(mineId.length < 40){
+		var flag = true;
+		var temp = Math.floor(Math.random() * 240);
+		for(var i = 0; i < mineId.length; i++){
+			if(mineId[i] == temp || first == temp){
+				flag = false;
+				break;
+			}
+		}
+		if(flag)
+			mineId.push(temp);
+	}
+}
+/**
+ * 计算每个格子周围地雷个数
+ */
+function countMineNum(){
+	for(var i = 0; i < mineId.length; i++){
+		mineNum[mineId[i]] = 7;
+		var lt, rt, l, r, lb, rb;
+		lt = mineId[i] - 19;
+		rt = mineId[i] - 18;
+		l = mineId[i] - 1;
+		r = mineId[i] + 1;
+		lb = mineId[i] + 18;
+		rb = mineId[i] + 19;
+		if(lt >= 0)
+			mineNum[lt]++;
+		if(rt >= 0)
+			mineNum[lt]++;
+		if(l >= 0)
+			mineNum[lt]++;
+		if(r >= 0)
+			mineNum[lt]++;
+		if(lb >= 0)
+			mineNum[lt]++;
+		if(rb >= 0)
+			mineNum[lt]++;
+		
+		
+	}
 }
 /**
  * 计时函数
@@ -65,6 +114,14 @@ function timing(){
 	temp = temp + 1;
 	$("#time").text(temp);
 	timeout = setTimeout(timing,1000);
+}
+/**
+ * 重新开始游戏，停止计时
+ */
+function newStart(){
+	$("#time").text("0");
+	clearTimeout(timeout);
+	$("#panel polygon").css("fill", "#a0a0a0");
 }
 /**
  * 生成整个雷区
@@ -108,15 +165,15 @@ function createPolygon(index, centerXY, sideLen){
 	$(polygon).attr("points", pointStr.trim());
 	return polygon;
 }
-/**
- * 重新开始游戏
- */
-function newStart(){
-	$("#time").text("0");
-	clearTimeout(timeout);
-	$("#panel polygon").css("fill", "#a0a0a0");
-}
 
+function createText(index, centerXY){
+	var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	$(text).attr("x", centerXY.x);
+	$(text).attr("y", centerXY.y);
+	$(text).text(index);
+	$(text).css("text-anchor", "middle");
+	return text;
+}
 String.prototype.trim = function(){
     return this.replace(/(^[\s]*)|([\s]*$)/g, "");
 };
