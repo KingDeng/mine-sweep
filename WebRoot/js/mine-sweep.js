@@ -11,7 +11,7 @@
 var timeout;			//setTimeOut返回值
 //var begin = false;		//扫雷开始标识
 var sideLength = 16;	//六边形边长
-var mineSize = 40;		//地雷个数
+var mineSize = 35;		//地雷个数
 var mineId = [];		//地雷所在位置
 var mineNum = [];		//周围地雷个数
 var firstXY = {};		//左上角第一个六边形中心点坐标
@@ -37,7 +37,6 @@ $(document).ready(function(){
 			
 			var tempP = createPolygon(index, centerXY, sideLength);
 			$("#panel").append(tempP);
-			$("#panel").append(createText(index, centerXY));
 			mineNum[index] = 0;
 			index++;
 		}
@@ -57,8 +56,56 @@ function sweep(){
 		timing();
 		initMines(id);
 	}
-	$(this).css("fill", "#009900");
 	
+	
+	$(this).css("fill", "#009900");
+	sweepZone($(this));
+}
+
+function sweepZone(current){
+	var curr = parseInt(current.attr("id"));
+	if(mineNum[curr] > 0 && mineNum[curr] < 7){
+		current.css("fill", "#009900");
+		return;
+	} else {
+		current.css("fill", "#009900");
+	}
+	
+	var six = [], lt, rt, l, r, lb, rb;
+	lt = curr - 19;
+	rt = curr - 18;
+	l = curr - 1;
+	r = curr + 1;
+	lb = curr + 18;
+	rb = curr + 19;
+	if(lt >= 0 && (curr - 18) % 37 != 0){
+		$("#" + lt).css("fill", "#009900");
+		six.push($("#" + lt));
+	}
+	if(rt >= 0 && (rt + 1) % 37 != 0){
+		$("#" + rt).css("fill", "#009900");
+		six.push($("#" + rt));
+	}
+	if(l >= 0 && ((l + 1) % 37 != 0) && (l - 17) % 37 != 0){
+		$("#" + l).css("fill", "#009900");
+		six.push($("#" + l));
+	}
+	if(r < 240 && ((curr + 1) % 37 != 0) && (curr - 17) % 37 != 0){
+		$("#" + r).css("fill", "#009900");
+		six.push($("#" + r));
+	}
+	if(lb < 240 && (curr - 18) % 37 != 0){
+		$("#" + lb).css("fill", "#009900");
+		six.push($("#" + lb));
+	}
+	if(rb < 240 && (curr + 1) % 37 != 0){
+		$("#" + rb).css("fill", "#009900");
+		six.push($("#" + rb));
+	}
+	for(var i in six){
+		sweepZone(six[i]);
+	}
+	return;
 }
 /**
  * 生成地雷
@@ -76,6 +123,27 @@ function initMines(first){
 		if(flag)
 			mineId.push(temp);
 	}
+	countMineNum();
+	var row = 13, col = 20, index = 0;
+	for(var i = 0; i < row; i++){
+		if(i % 2 != 0)
+			col = 19;
+		else 
+			col = 18;
+		
+		for(var j = 0; j < col; j++){
+			var centerXY = {};
+			if(i % 2 == 0)
+				centerXY.x = firstXY.x + sideLength * Math.sqrt(3) / 2 + sideLength * Math.sqrt(3) * j;
+			else
+				centerXY.x = firstXY.x + sideLength * Math.sqrt(3) * j;
+			
+			centerXY.y = firstXY.y + sideLength * i * 3 / 2;
+			
+			$("#panel").append(createText(mineNum[index], centerXY));
+			index++;
+		}
+	}
 }
 /**
  * 计算每个格子周围地雷个数
@@ -83,27 +151,26 @@ function initMines(first){
 function countMineNum(){
 	for(var i = 0; i < mineId.length; i++){
 		mineNum[mineId[i]] = 7;
-		var lt, rt, l, r, lb, rb;
-		lt = mineId[i] - 19;
-		rt = mineId[i] - 18;
-		l = mineId[i] - 1;
-		r = mineId[i] + 1;
-		lb = mineId[i] + 18;
-		rb = mineId[i] + 19;
-		if(lt >= 0)
+		var curr, lt, rt, l, r, lb, rb;
+		curr = mineId[i];
+		lt = curr - 19;
+		rt = curr - 18;
+		l = curr - 1;
+		r = curr + 1;
+		lb = curr + 18;
+		rb = curr + 19;
+		if(lt >= 0 && (curr - 18) % 37 != 0)
 			mineNum[lt]++;
-		if(rt >= 0)
-			mineNum[lt]++;
-		if(l >= 0)
-			mineNum[lt]++;
-		if(r >= 0)
-			mineNum[lt]++;
-		if(lb >= 0)
-			mineNum[lt]++;
-		if(rb >= 0)
-			mineNum[lt]++;
-		
-		
+		if(rt >= 0 && (rt + 1) % 37 != 0)
+			mineNum[rt]++;
+		if(l >= 0 && ((l + 1) % 37 != 0) && (l - 17) % 37 != 0)
+			mineNum[l]++;
+		if(r < 240 && ((curr + 1) % 37 != 0) && (curr - 17) % 37 != 0)
+			mineNum[r]++;
+		if(lb < 240 && (curr - 18) % 37 != 0)
+			mineNum[lb]++;
+		if(rb < 240 && (curr + 1) % 37 != 0)
+			mineNum[rb]++;
 	}
 }
 /**
