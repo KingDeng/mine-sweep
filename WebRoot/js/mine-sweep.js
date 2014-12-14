@@ -9,11 +9,12 @@
  *  ================================================================
  */
 var timeout;			//setTimeOut返回值
-//var begin = false;		//扫雷开始标识
 var sideLength = 16;	//六边形边长
 var mineSize = 35;		//地雷个数
 var mineId = [];		//地雷所在位置
+var mineFlag = [];		//记录当前区域是否被翻开
 var mineNum = [];		//周围地雷个数
+var square = [];		//记录所有格子的中心坐标
 var firstXY = {};		//左上角第一个六边形中心点坐标
 firstXY.x = 50;
 firstXY.y = 40;
@@ -37,6 +38,7 @@ $(document).ready(function(){
 			
 			var tempP = createPolygon(index, centerXY, sideLength);
 			$("#panel").append(tempP);
+			square.push(centerXY);
 			mineNum[index] = 0;
 			index++;
 		}
@@ -64,10 +66,17 @@ function sweep(){
 
 function sweepZone(current){
 	var curr = parseInt(current.attr("id"));
+	if(mineFlag[curr])
+		return;
 	if(mineNum[curr] > 0 && mineNum[curr] < 7){
+		mineFlag[curr] = true;
+		$("#panel").append(createText(mineNum[curr], square[curr]));
 		current.css("fill", "#009900");
 		return;
+	} else if(mineNum[curr] > 6) {
+		
 	} else {
+		mineFlag[curr] = true;
 		current.css("fill", "#009900");
 	}
 	
@@ -79,27 +88,21 @@ function sweepZone(current){
 	lb = curr + 18;
 	rb = curr + 19;
 	if(lt >= 0 && (curr - 18) % 37 != 0){
-		$("#" + lt).css("fill", "#009900");
 		six.push($("#" + lt));
 	}
 	if(rt >= 0 && (rt + 1) % 37 != 0){
-		$("#" + rt).css("fill", "#009900");
 		six.push($("#" + rt));
 	}
 	if(l >= 0 && ((l + 1) % 37 != 0) && (l - 17) % 37 != 0){
-		$("#" + l).css("fill", "#009900");
 		six.push($("#" + l));
 	}
 	if(r < 240 && ((curr + 1) % 37 != 0) && (curr - 17) % 37 != 0){
-		$("#" + r).css("fill", "#009900");
 		six.push($("#" + r));
 	}
 	if(lb < 240 && (curr - 18) % 37 != 0){
-		$("#" + lb).css("fill", "#009900");
 		six.push($("#" + lb));
 	}
 	if(rb < 240 && (curr + 1) % 37 != 0){
-		$("#" + rb).css("fill", "#009900");
 		six.push($("#" + rb));
 	}
 	for(var i in six){
@@ -124,26 +127,6 @@ function initMines(first){
 			mineId.push(temp);
 	}
 	countMineNum();
-	var row = 13, col = 20, index = 0;
-	for(var i = 0; i < row; i++){
-		if(i % 2 != 0)
-			col = 19;
-		else 
-			col = 18;
-		
-		for(var j = 0; j < col; j++){
-			var centerXY = {};
-			if(i % 2 == 0)
-				centerXY.x = firstXY.x + sideLength * Math.sqrt(3) / 2 + sideLength * Math.sqrt(3) * j;
-			else
-				centerXY.x = firstXY.x + sideLength * Math.sqrt(3) * j;
-			
-			centerXY.y = firstXY.y + sideLength * i * 3 / 2;
-			
-			$("#panel").append(createText(mineNum[index], centerXY));
-			index++;
-		}
-	}
 }
 /**
  * 计算每个格子周围地雷个数
@@ -186,6 +169,15 @@ function timing(){
  * 重新开始游戏，停止计时
  */
 function newStart(){
+	mineId = [];
+	mineFlag = [];
+	mineNum = [];
+	square = [];
+	for(var i = 0; i < 240; i++){
+		mineNum[i] = 0;
+	}
+	
+	$("#panel text").remove();
 	$("#time").text("0");
 	clearTimeout(timeout);
 	$("#panel polygon").css("fill", "#a0a0a0");
@@ -233,11 +225,11 @@ function createPolygon(index, centerXY, sideLen){
 	return polygon;
 }
 
-function createText(index, centerXY){
+function createText(num, centerXY){
 	var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
 	$(text).attr("x", centerXY.x);
-	$(text).attr("y", centerXY.y);
-	$(text).text(index);
+	$(text).attr("y", centerXY.y + 5);
+	$(text).text(num);
 	$(text).css("text-anchor", "middle");
 	return text;
 }
