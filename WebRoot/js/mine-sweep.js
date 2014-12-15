@@ -61,49 +61,49 @@ function sweep(){
 	
 	
 	$(this).css("fill", "#009900");
-	sweepZone($(this));
+	sweepZone(id);
 }
 
-function sweepZone(current){
-	var curr = parseInt(current.attr("id"));
-	if(mineFlag[curr])
+function sweepZone(currId){
+	var current = $("#" + currId);
+	if(mineFlag[currId])
 		return;
-	if(mineNum[curr] > 0 && mineNum[curr] < 7){
-		mineFlag[curr] = true;
-		$("#panel").append(createText(mineNum[curr], square[curr]));
+	if(mineNum[currId] > 0 && mineNum[currId] < 7){
+		mineFlag[currId] = true;
+		$("#gSize").append(createText(mineNum[currId], square[currId]));
 		current.css("fill", "#009900");
 		return;
-	} else if(mineNum[curr] > 6) {
-		
+	} else if(mineNum[currId] > 6) {
+		fail(currId);
 	} else {
-		mineFlag[curr] = true;
+		mineFlag[currId] = true;
 		current.css("fill", "#009900");
 	}
 	
 	var six = [], lt, rt, l, r, lb, rb;
-	lt = curr - 19;
-	rt = curr - 18;
-	l = curr - 1;
-	r = curr + 1;
-	lb = curr + 18;
-	rb = curr + 19;
-	if(lt >= 0 && (curr - 18) % 37 != 0){
-		six.push($("#" + lt));
+	lt = currId - 19;
+	rt = currId - 18;
+	l = currId - 1;
+	r = currId + 1;
+	lb = currId + 18;
+	rb = currId + 19;
+	if(lt >= 0 && (currId - 18) % 37 != 0){
+		six.push(lt);
 	}
 	if(rt >= 0 && (rt + 1) % 37 != 0){
-		six.push($("#" + rt));
+		six.push(rt);
 	}
 	if(l >= 0 && ((l + 1) % 37 != 0) && (l - 17) % 37 != 0){
-		six.push($("#" + l));
+		six.push(l);
 	}
-	if(r < 240 && ((curr + 1) % 37 != 0) && (curr - 17) % 37 != 0){
-		six.push($("#" + r));
+	if(r < 240 && ((currId + 1) % 37 != 0) && (currId - 17) % 37 != 0){
+		six.push(r);
 	}
-	if(lb < 240 && (curr - 18) % 37 != 0){
-		six.push($("#" + lb));
+	if(lb < 240 && (currId - 18) % 37 != 0){
+		six.push(lb);
 	}
-	if(rb < 240 && (curr + 1) % 37 != 0){
-		six.push($("#" + rb));
+	if(rb < 240 && (currId + 1) % 37 != 0){
+		six.push(rb);
 	}
 	for(var i in six){
 		sweepZone(six[i]);
@@ -111,10 +111,21 @@ function sweepZone(current){
 	return;
 }
 /**
+ * 踩到地雷，失败
+ * @param current
+ */
+function fail(currId){
+	$("#gMines").append(createUse(currId));
+	for(var i in mineId){
+		$("#gMines").append(createUse(mineId[i]));
+	}
+	alert("你输了！");
+}
+/**
  * 生成地雷
  */
 function initMines(first){
-	while(mineId.length < 40){
+	while(mineId.length < 35){
 		var flag = true;
 		var temp = Math.floor(Math.random() * 240);
 		for(var i = 0; i < mineId.length; i++){
@@ -172,7 +183,6 @@ function newStart(){
 	mineId = [];
 	mineFlag = [];
 	mineNum = [];
-	square = [];
 	for(var i = 0; i < 240; i++){
 		mineNum[i] = 0;
 	}
@@ -232,6 +242,13 @@ function createText(num, centerXY){
 	$(text).text(num);
 	$(text).css("text-anchor", "middle");
 	return text;
+}
+function createUse(currId){
+	var use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+	$(use).attr("x", square[currId].x);
+	$(use).attr("y", square[currId].y);
+	$(use).attr("xlink:href", "#mine");
+	return use;
 }
 String.prototype.trim = function(){
     return this.replace(/(^[\s]*)|([\s]*$)/g, "");
