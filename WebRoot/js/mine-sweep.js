@@ -71,6 +71,7 @@ function sweepZone(currId){
 		mineFlag[currId] = true;
 		$("#gSize").append(createText(mineNum[currId], square[currId]));
 		current.css("fill", "#009900");
+		needOpen();
 		return;
 	} else if(mineNum[currId] > 6) {
 		fail(currId);
@@ -78,6 +79,7 @@ function sweepZone(currId){
 	} else {
 		mineFlag[currId] = true;
 		current.css("fill", "#009900");
+		needOpen();
 	}
 	
 	var six = [], lt, rt, l, r, lb, rb;
@@ -109,6 +111,14 @@ function sweepZone(currId){
 		sweepZone(six[i]);
 	}
 	return;
+}
+/**
+ * 更新剩余未翻开区域数目
+ */
+function needOpen(){
+	var num = parseInt($("#needOpen").text());
+	num--;
+	$("#needOpen").text(num);
 }
 /**
  * 踩到地雷，失败
@@ -192,7 +202,11 @@ function newStart(){
 	}
 	
 	$("#panel text").remove();
+	$("#panel g").remove();
+	$("#gSize text").remove();
 	$("#time").text("0");
+	$("#needOpen").text(240 - mineSize);
+	$("#minesRest").text(mineSize);
 	clearTimeout(timeout);
 	$("#panel polygon").css("fill", "#a0a0a0");
 }
