@@ -59,7 +59,6 @@ function sweep(){
 		initMines(id);
 	}
 	
-	
 	$(this).css("fill", "#009900");
 	sweepZone(id);
 }
@@ -123,6 +122,7 @@ function fail(currId){
 		$("#panel").append(createUse(mineId[i]));
 	}
 	$("#panel").append(t);
+	clearTimeout(timeout);
 	alert("你输了！");
 }
 /**
