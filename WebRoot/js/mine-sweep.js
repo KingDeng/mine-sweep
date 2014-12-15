@@ -75,6 +75,7 @@ function sweepZone(currId){
 		return;
 	} else if(mineNum[currId] > 6) {
 		fail(currId);
+		return;
 	} else {
 		mineFlag[currId] = true;
 		current.css("fill", "#009900");
@@ -115,10 +116,13 @@ function sweepZone(currId){
  * @param current
  */
 function fail(currId){
-	$("#gMines").append(createUse(currId));
+	var err = true;
+	var t = createUse(currId,err);
 	for(var i in mineId){
-		$("#gMines").append(createUse(mineId[i]));
+		$("#" + mineId[i]).css("fill", "#009900");
+		$("#panel").append(createUse(mineId[i]));
 	}
+	$("#panel").append(t);
 	alert("你输了！");
 }
 /**
@@ -243,11 +247,18 @@ function createText(num, centerXY){
 	$(text).css("text-anchor", "middle");
 	return text;
 }
-function createUse(currId){
-	var use = document.createElementNS("http://www.w3.org/2000/svg", "use");
-	$(use).attr("x", square[currId].x);
-	$(use).attr("y", square[currId].y);
-	$(use).attr("xlink:href", "#mine");
+function createUse(currId,flag){
+	var use;
+	if(flag)
+		use = $("#mineErr").clone();
+	else
+		use = $("#mine").clone();
+	var trans = "translate(";
+	trans += square[currId].x - 15 + ",";
+	trans += square[currId].y - 20;
+	trans += ")";
+	$(use).attr("id", currId);
+	$(use).attr("transform", trans);
 	return use;
 }
 String.prototype.trim = function(){
