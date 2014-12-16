@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+body {
+	margin:0 0;
+}
+#panel path,#panel polygon,.button path,.label path {
+	fill: #a0a0a0;
+	fill-opacity: .8;
+	stroke: #99cc66;
+	stroke-width: 1;
+}
+
+rect {
+	fill: #009900;
+	stroke: #009900;
+	stroke-width: 2px;
+}
+
+#panel polygon {
+	cursor: pointer;
+}
+#panel polygon:hover {
+	fill: #B9B9B9;
+}
+
+.events-none,#g2,#gMines,#gQues,#gFlags {
+	pointer-events: none;
+}
+
+g.button path{
+	cursor: pointer;
+}
+g.button:hover path {
+	fill: #009900;
+}
+g.button:hover text {
+	fill: #a0a0a0;
+}
+
+g.button text, g.label text {
+	fill: #006600;
+	text-anchor: middle;
+}
+
+text {
+	font-family: Times New Roman;
+	font-size: 16pt;
+	font-weight: bold;
+}
