@@ -8,15 +8,15 @@
  * 
  *  ================================================================
  */
-var timeout;			    //setTimeOut返回值
-var sideLength = 16;	//六边形边长
+var timeout;			//setTimeOut返回值
+var sideLength = 16;		//六边形边长
 var mineSize = 35;		//地雷个数
-var mineId = [];		  //地雷所在位置Id
+var mineId = [];		//地雷所在位置Id
 var mineFlag = [];		//记录当前区域是否被翻开
-var mineNum = [];		  //周围地雷个数
-var square = [];		  //记录所有格子的中心坐标
-var flagId = [];		  //记录红旗所在位置Id
-var firstXY = {};		  //左上角第一个六边形中心点坐标
+var mineNum = [];		//周围地雷个数
+var square = [];		//记录所有格子的中心坐标
+var flagId = [];		//记录红旗所在位置Id
+var firstXY = {};		//左上角第一个六边形中心点坐标
 firstXY.x = 50;
 firstXY.y = 40;
 
