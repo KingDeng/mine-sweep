@@ -1,68 +1,71 @@
+<!-- 
+	六边形扫雷（模仿http://cuixiping.github.io/minesweeper-240.svg）
+	@author   King Deng
+	@email    kuohsing_don@163.com
+	@date     2014-12
+ -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
-
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Mine-sweep by KingDeng</title>
-  </head>
-
-  <body>
-    <a id="forkme_banner" href="https://github.com/KingDeng/mine-sweep">View on GitHub</a>
-    <div class="shell">
-
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Mine-sweep</h1>
-            <h2>六边形扫雷游戏</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/KingDeng/mine-sweep/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/KingDeng/mine-sweep/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <p>六边形扫雷小游戏，不过还有bug，现在没心情修改了。</p>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/KingDeng">KingDeng</a> can be found on <a href="https://github.com/KingDeng/mine-sweep">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
-    </div>
-
-    
-  </body>
+<head>
+<meta charset="UTF-8">
+<title>Mine Sweep</title>
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+<script src="js/mine-sweep.js"></script>
+<link href="css/mine.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<svg viewBox="0 0 600 400" preserveaspectratio="xMidYMid meet" 
+	xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<polygon id="pattern2" points="0 0 1 1 2 2" ></polygon>
+	
+		<g id="flagMark">
+			<path d="M-3 -10 l0 15 15 0z" fill="#ff0000" stroke="none" ></path>
+			<path d="M-3 -10 l0 20" fill="none" stroke="#800000" stroke-width="3" ></path>
+		</g>
+		<use id="useFlag" x="0" y="14" xlink:href="#flagMark"
+				xmlns:xlink="http://www.w3.org/1999/xlink" ></use>
+		<g id="flagErrMark">
+			<path d="M-3 -10 l0 15 15 0z" fill="#fff" stroke="none" ></path>
+			<path d="M-3 -10 l0 20" fill="none" stroke="#ccc" stroke-width="3" ></path>
+		</g>
+		<g id="mine">
+			<path fill="none" stroke="#333333" stroke-width="1"
+				d="m 7.625,16.49 c -5.125,-13.62 11,2 9.5,-7.88" ></path>
+			<path fill="#808080" stroke="#333333" stroke-width="1"
+				d="m 11.375,23.74 4.375,-4.75 -4,-5.5 c 0,0 -2.07,-0.24 -4,1.37 -2.25,1.88 -2.5,3.5 -2.5,3.5 z" ></path>
+			<circle cx="15" cy="23" r="8" fill="#999" stroke="#333333"
+				stroke-width="1" ></circle>
+		</g>
+		<g id="mineErr">
+			<path fill="none" stroke="#cc0000" stroke-width="1"
+				d="m 7.625,16.49 c -5.125,-13.62 11,2 9.5,-7.88" ></path>
+			<path fill="#cc0000" stroke="#333333" stroke-width="1"
+				d="m 11.375,23.74 4.375,-4.75 -4,-5.5 c 0,0 -2.07,-0.24 -4,1.37 -2.25,1.88 -2.5,3.5 -2.5,3.5 z" ></path>
+			<circle cx="15" cy="23" r="8" fill="#cc0000" stroke="#333333"
+				stroke-width="1" ></circle>
+		</g>
+	</defs>
+	<rect x="1" y="1" width="598" height="398" ab="author"></rect>
+	<g id="panel"></g>
+	<g id="gSize"></g>
+	
+	<g class="button">
+		<path id="btnNew" d="M 50 370 l 7 -7 h35 l 7 7 v10 l -7 7 h-35 l -7 -7 z" class="button" ></path>
+		<text class="events-none" x="76" y="382">New</text>
+	</g>
+	<g class="label">
+		<path d="M 120 370 l 7 -7 h35 l 7 7 v10 l -7 7 h-35 l -7 -7 z"></path>
+		<text id="time" x="145" y="382">0</text>
+	</g>
+	<g class="label">
+		<path d="M 430 370 l 7 -7 h35 l 7 7 v10 l -7 7 h-35 l -7 -7 z"></path>
+		<text id="needOpen" x="455" y="382"></text>
+	</g>
+	<g class="label">
+		<path d="M 500 370 l 7 -7 h35 l 7 7 v10 l -7 7 h-35 l -7 -7 z"></path>
+		<text id="minesRest" x="525" y="382"></text>
+	</g>
+</svg>
+</body>
 </html>
