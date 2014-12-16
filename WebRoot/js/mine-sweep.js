@@ -11,10 +11,11 @@
 var timeout;			//setTimeOut返回值
 var sideLength = 16;	//六边形边长
 var mineSize = 35;		//地雷个数
-var mineId = [];		//地雷所在位置
+var mineId = [];		//地雷所在位置Id
 var mineFlag = [];		//记录当前区域是否被翻开
 var mineNum = [];		//周围地雷个数
 var square = [];		//记录所有格子的中心坐标
+var flagId = [];		//记录红旗所在位置Id
 var firstXY = {};		//左上角第一个六边形中心点坐标
 firstXY.x = 50;
 firstXY.y = 40;
@@ -46,10 +47,32 @@ $(document).ready(function(){
 	$("#needOpen").text(index - mineSize);
 	$("#minesRest").text(mineSize);
 	$("#panel polygon").on("click", sweep);
+	$("#panel polygon").on("contextmenu",flagMine);
 	$("#btnNew").on("click", newStart);
 });
 /**
- * 扫雷事件(即单击雷区事件)
+ * 鼠标右键标记地雷事件
+ * @param e
+ * @returns {Boolean}
+ */
+function flagMine(e){
+	if(e.which == 3){
+		var target = e.target;
+		var id = $(target).attr("id");
+		for(var i = 0; i < mineId.length; i++){
+			if(id == mineId[i]){
+				flagId.push(id);
+			}
+		}
+		var rest = parseInt($("#minesRest").text());
+		rest--;
+		$("#minesRest").text(rest);
+		$("#panel").append(createFlag(id));
+	}
+	return false;
+}
+/**
+ * 扫雷事件(即单击鼠标左键事件)
  */
 function sweep(){
 	var id = parseInt($(this).attr("id"));
@@ -139,7 +162,7 @@ function fail(currId){
  * 生成地雷
  */
 function initMines(first){
-	while(mineId.length < 35){
+	while(mineId.length < mineSize){
 		var flag = true;
 		var temp = Math.floor(Math.random() * 240);
 		for(var i = 0; i < mineId.length; i++){
@@ -197,6 +220,7 @@ function newStart(){
 	mineId = [];
 	mineFlag = [];
 	mineNum = [];
+	flagId = [];
 	for(var i = 0; i < 240; i++){
 		mineNum[i] = 0;
 	}
@@ -271,9 +295,19 @@ function createUse(currId,flag){
 	trans += square[currId].x - 15 + ",";
 	trans += square[currId].y - 20;
 	trans += ")";
-	$(use).attr("id", currId);
+	$(use).removeAttr("id");
 	$(use).attr("transform", trans);
 	return use;
+}
+function createFlag(currId){
+	var flag = $("#flagMark").clone();
+	var trans = "translate(";
+	trans += square[currId].x + ",";
+	trans += square[currId].y;
+	trans += ")";
+	$(flag).removeAttr("id");
+	$(flag).attr("transform", trans);
+	return flag;
 }
 String.prototype.trim = function(){
     return this.replace(/(^[\s]*)|([\s]*$)/g, "");
