@@ -226,7 +226,7 @@ function newStart(){
 	}
 	
 	$("#panel text").remove();
-	$("#panel g").remove();
+	$("#panel use").remove();
 	$("#gSize text").remove();
 	$("#time").text("0");
 	$("#needOpen").text(240 - mineSize);
@@ -286,27 +286,28 @@ function createText(num, centerXY){
 	return text;
 }
 function createUse(currId,flag){
-	var use;
+	var use = document.createElementNS("http://www.w3.org/2000/svg", "use");
 	if(flag)
-		use = $("#mineErr").clone();
+		use.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#mineErr");
 	else
-		use = $("#mine").clone();
-	var trans = "translate(";
-	trans += square[currId].x - 15 + ",";
-	trans += square[currId].y - 20;
-	trans += ")";
+		use.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#mine");
+	$(use).attr("x", square[currId].x - 15);
+	$(use).attr("y", square[currId].y - 20);
 	$(use).removeAttr("id");
-	$(use).attr("transform", trans);
 	return use;
 }
 function createFlag(currId){
-	var flag = $("#flagMark").clone();
-	var trans = "translate(";
-	trans += square[currId].x + ",";
-	trans += square[currId].y;
-	trans += ")";
+	var flag = document.createElementNS("http://www.w3.org/2000/svg", "use");
+	flag.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#flagMark");
+	$(flag).attr("x", square[currId].x);
+	$(flag).attr("y", square[currId].y);
 	$(flag).removeAttr("id");
-	$(flag).attr("transform", trans);
+	$(flag).on("click", function(){
+		$(this).remove();
+		var rest = parseInt($("#minesRest").text());
+		rest++;
+		$("#minesRest").text(rest);
+	});
 	return flag;
 }
 String.prototype.trim = function(){
