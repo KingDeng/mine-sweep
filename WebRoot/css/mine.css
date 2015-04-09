@@ -9,7 +9,7 @@ body {
 	stroke-width: 1;
 }
 
-rect {
+#panel rect {
 	fill: #009900;
 	stroke: #009900;
 	stroke-width: 2px;
